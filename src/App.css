@@ -62,4 +62,11 @@ h3{
   align-items: center;
   justify-content: space-between;
   font-family: Outfit , sans-serif;
+  margin-bottom: 1rem;
+}
+.remain{
+  color: red;
+}
+.spend{
+  color: blue;
 }

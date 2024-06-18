@@ -12,13 +12,19 @@ function Expense() {
     const {budget , remainingBudget , spend , setBudget , setUserName , setCost , data , setData , userName , cost ,setSpend , setRemainingBudget} = useContext(expenseContext);
     
     function handleSave(){
-        const obj ={};
-        obj.name = userName;
-        obj.cost = cost;
-        
-        setData([...data , obj ])
-        setCost(0);
-        setUserName("")
+        if(userName.length > 0 && cost > 0){
+            const obj ={};
+            obj.name = userName;
+            obj.cost = cost;
+            
+            setData([...data , obj ])
+            setCost(0);
+            setUserName("")
+        }else{
+            alert("Please write name and cost !!!! empty field not allowed ");
+            return;
+        }
+   
     }
     
 
@@ -43,7 +49,7 @@ function Expense() {
          }
       
       },[data])
-      console.log(data)
+
   return (
     <>
      <div className="container">
@@ -51,25 +57,26 @@ function Expense() {
 
         <div className="display-container">
           <h4>Budget: {budget}</h4>
-          <h4>Remaining: {remainingBudget - spend}</h4>
-          <h4>Spend so far : {spend}</h4>
+          <h4 className='remain'>Remaining: {remainingBudget - spend  }</h4>
+          <h4 className='spend'>Spend so far : {spend}</h4>
         </div>
          
-         <h3>Expenses</h3>
-        <div className="expense-container">
-           {data.map((item,index)=>{
-             return <Item key={index} data={item} />
-           })}
-        </div>
         <h3>Add Expenses</h3>
         <div className="detail">
         <TextField id="outlined-basic" label="Name" variant="outlined" style={{width:"50%"}} 
-          value={userName} onChange={(e)=>setUserName(e.target.value)}
+          value={userName} onChange={(e)=>setUserName(e.target.value) }
         />
         <TextField id="outlined-basic" label="Cost" variant="outlined" type="number" min={1} max={2000}
          value={cost} onChange={(e)=>setCost(e.target.value)}
         />
         <Button variant="outlined" onClick={handleSave} >Save</Button>
+        </div>
+
+        <h3>Expenses</h3>
+        <div className="expense-container">
+           {data.map((item,index)=>{
+             return <Item key={index} data={item} />
+           })}
         </div>
      </div>
     </>
