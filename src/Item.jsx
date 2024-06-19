@@ -6,8 +6,8 @@ function Item({handleDelete,data}) {
       <div className="expense">
         <p>{data.name}</p>
         <div className="rate">
-          <p>{data.cost}</p>
-          <DeleteIcon onClick={(e)=>{handleDelete(e,id)}} style={{cursor:"pointer"}}/>
+          <p>Rs : {data.cost}</p>
+          <DeleteIcon onClick={(e)=>{handleDelete(e,data.id)}} style={{cursor:"pointer"}}/>
         </div>
       </div>
     </>

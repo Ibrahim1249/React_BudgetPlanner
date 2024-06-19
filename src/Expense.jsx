@@ -16,6 +16,7 @@ function Expense() {
             const obj ={};
             obj.name = userName;
             obj.cost = cost;
+            obj.id = Date.now();
             
             setData([...data , obj ])
             setCost(0);
@@ -26,18 +27,28 @@ function Expense() {
         }
    
     }
+
+    function handleDelete(e,id){
+       let copyArray = [...data];
+       setData(copyArray.filter((item,index)=>{
+           return item.id !== id;
+       }))
+    }
     
 
     useEffect(() => {
-          const userInput = prompt('Please enter a number:');
+          const userInput = prompt('Please enter a Budget Amount:');
           if (!isNaN(userInput) && userInput !== null) {
             setBudget(userInput);
             setRemainingBudget(userInput)
+          }else{
+            setBudget(10000)
+            setRemainingBudget(10000)
           }
       }, []);
 
       useEffect(()=>{
-         if(data.length > 0){
+        
             let copyArray = [...data];
             
             let totalCost = 0;
@@ -46,7 +57,7 @@ function Expense() {
             })
            
             setSpend(totalCost)
-         }
+         
       
       },[data])
 
@@ -56,9 +67,9 @@ function Expense() {
         <h1>My Budget Planner</h1>
 
         <div className="display-container">
-          <h4>Budget: {budget}</h4>
-          <h4 className='remain'>Remaining: {remainingBudget - spend  }</h4>
-          <h4 className='spend'>Spend so far : {spend}</h4>
+          <h4>Budget: {budget} Rs</h4>
+          <h4 className='remain'>Remaining: {remainingBudget - spend  } Rs</h4>
+          <h4 className='spend'>Spend so far : {spend} Rs</h4>
         </div>
          
         <h3>Add Expenses</h3>
@@ -66,16 +77,16 @@ function Expense() {
         <TextField id="outlined-basic" label="Name" variant="outlined" style={{width:"50%"}} 
           value={userName} onChange={(e)=>setUserName(e.target.value) }
         />
-        <TextField id="outlined-basic" label="Cost" variant="outlined" type="number" min={1} max={2000}
-         value={cost} onChange={(e)=>setCost(e.target.value)}
+        <TextField id="outlined-basic" label="Cost" variant="outlined" type="number"
+         value={cost} onChange={(e)=>setCost(e.target.value)} min={1} max={Number(remainingBudget)}
         />
-        <Button variant="outlined" onClick={handleSave} >Save</Button>
+        <Button variant="outlined" onClick={handleSave} style={{ color: "#000000"}}>Save</Button>
         </div>
 
-        <h3>Expenses</h3>
+        <h3>Expenses : </h3>
         <div className="expense-container">
            {data.map((item,index)=>{
-             return <Item key={index} data={item} />
+             return <Item key={index} data={item} handleDelete={handleDelete}/>
            })}
         </div>
      </div>
